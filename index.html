@@ -3,701 +3,440 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sakhawat Hossain — Unity 3D Game Developer</title>
-<meta name="description" content="Sakhawat Hossain — Unity 3D developer building small, tactile, hyper-casual games. Eleven titles shipped, featuring Little Adventure 3D on Unity Play.">
+<title>SAKHAWAT HOSSAIN — INSERT COIN // Unity Game Developer</title>
+<meta name="description" content="Arcade-cabinet portfolio of Sakhawat Hossain — Unity 3D game developer. Eleven shipped hyper-casual titles. Press start.">
 
-<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
-<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,700,500&f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-
-<style>
-:root{
-  --ink:#17102B;
-  --ink-2:#1E1638;
-  --ink-3:#271C48;
-  --card:#241A44;
-  --line:rgba(255,255,255,.09);
-  --line-2:rgba(255,255,255,.14);
-  --cream:#F6F1FF;
-  --muted:#A99CC9;
-  --muted-2:#8579A8;
-  --pink:#FF3D77;
-  --pink-2:#FF7A9E;
-  --tang:#FFB24C;
-  --grad:linear-gradient(118deg,#FF3D77 0%,#FF7A4C 100%);
-  --shadow:0 24px 60px -24px rgba(0,0,0,.7);
-  --pad:clamp(20px,5vw,64px);
-  --maxw:1200px;
-  --disp:"Cabinet Grotesk",system-ui,sans-serif;
-  --body:"Satoshi",system-ui,sans-serif;
-  --mono:"Space Mono",ui-monospace,monospace;
-}
-
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;
-  background:var(--ink);
-  color:var(--cream);
-  font-family:var(--body);
-  font-size:17px;
-  line-height:1.6;
-  -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
-}
-/* ambient light + faint tactile grain */
-body::before{
-  content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
-  background:
-    radial-gradient(60vw 60vw at 82% -8%, rgba(255,61,119,.20), transparent 60%),
-    radial-gradient(50vw 50vw at 8% 6%, rgba(255,178,76,.14), transparent 55%),
-    radial-gradient(70vw 70vw at 50% 120%, rgba(120,90,255,.16), transparent 60%);
-}
-body::after{
-  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.035;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-a{color:inherit;text-decoration:none}
-img{max-width:100%;display:block}
-h1,h2,h3{margin:0;font-family:var(--disp);font-weight:800;letter-spacing:-.02em;line-height:1.02}
-
-.wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
-
-.eyebrow{
-  font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.22em;
-  text-transform:uppercase;color:var(--muted);display:inline-flex;align-items:center;gap:10px;
-}
-.eyebrow::before{content:"";width:26px;height:2px;background:var(--grad);border-radius:2px}
-
-.btn{
-  display:inline-flex;align-items:center;gap:.55em;
-  font-family:var(--disp);font-weight:700;font-size:16px;letter-spacing:-.01em;
-  padding:14px 22px;border-radius:14px;border:1px solid transparent;cursor:pointer;
-  transition:transform .12s cubic-bezier(.2,.8,.2,1), box-shadow .2s, background .2s;
-}
-.btn-primary{background:var(--grad);color:#fff;box-shadow:0 12px 30px -10px rgba(255,61,119,.6)}
-.btn-primary:hover{transform:translateY(-2px)}
-.btn-primary:active{transform:translateY(1px) scale(.99)}
-.btn-ghost{background:rgba(255,255,255,.04);border-color:var(--line-2);color:var(--cream)}
-.btn-ghost:hover{background:rgba(255,255,255,.09);transform:translateY(-2px)}
-
-/* ---------- top bar ---------- */
-.topbar{
-  position:sticky;top:0;z-index:50;
-  backdrop-filter:blur(14px);background:rgba(23,16,43,.62);
-  border-bottom:1px solid var(--line);
-}
-.topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:66px}
-.brand{display:flex;align-items:center;gap:12px;font-family:var(--disp);font-weight:800;letter-spacing:-.02em}
-.monogram{
-  width:38px;height:38px;border-radius:11px;background:var(--grad);
-  display:grid;place-items:center;color:#fff;font-size:15px;box-shadow:0 8px 20px -8px rgba(255,61,119,.7);
-}
-.brand small{display:block;font-family:var(--mono);font-size:10px;font-weight:400;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
-.nav{display:flex;align-items:center;gap:28px}
-.nav a{font-size:14px;color:var(--muted);transition:color .18s}
-.nav a:hover{color:var(--cream)}
-.nav .btn{padding:9px 16px;font-size:14px}
-@media (max-width:760px){.nav a.navlink{display:none}}
-
-/* ---------- hero ---------- */
-.hero{padding:clamp(48px,8vw,104px) 0 clamp(40px,6vw,72px)}
-.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,4vw,56px);align-items:center}
-@media (max-width:900px){.hero-grid{grid-template-columns:1fr;gap:36px}}
-
-/* orchestrated load-in */
-@keyframes heroIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
-.hero-copy .eyebrow,
-.hero-copy .lede,
-.hero-copy .hero-cta,
-.hero h1 .line{opacity:0;animation:heroIn .82s cubic-bezier(.2,.8,.2,1) forwards}
-.hero-copy .eyebrow{animation-delay:.04s}
-.hero h1 .line.l1{animation-delay:.14s}
-.hero h1 .line.l2{animation-delay:.26s}
-.hero-copy .lede{animation-delay:.44s}
-.hero-copy .hero-cta{animation-delay:.56s}
-
-.hero h1{font-size:clamp(44px,7.4vw,86px);margin:22px 0 20px}
-.hero h1 .line{display:block}
-
-/* interactive "satisfying click." */
-.click{
-  position:relative;display:inline-block;cursor:pointer;white-space:nowrap;
-  color:transparent;background:var(--grad);-webkit-background-clip:text;background-clip:text;
-  transition:filter .2s;
-}
-.click:hover{filter:brightness(1.1) saturate(1.06)}
-.click.pop{animation:clickpop .42s cubic-bezier(.2,1.7,.4,1)}
-@keyframes clickpop{0%{transform:scale(1)}28%{transform:scale(.93)}100%{transform:scale(1)}}
-.click::after{
-  content:"";position:absolute;left:.02em;right:.02em;bottom:.02em;height:.13em;border-radius:99px;
-  background:var(--grad);opacity:.34;transform:scaleX(0);transform-origin:left;
-  animation:underline 1s .55s cubic-bezier(.2,.8,.2,1) forwards;
-}
-@keyframes underline{to{transform:scaleX(1)}}
-.click .ring{
-  position:absolute;width:12px;height:12px;border-radius:50%;border:2px solid var(--pink-2);
-  transform:translate(-50%,-50%);pointer-events:none;opacity:.85;
-}
-@keyframes ringout{to{width:190px;height:190px;opacity:0;border-color:var(--tang)}}
-
-.hero .lede{font-size:clamp(17px,2.1vw,20px);color:var(--muted);max-width:34ch;margin:0 0 30px}
-.hero .lede b{color:var(--cream);font-weight:700}
-.hero-cta{display:flex;flex-wrap:wrap;gap:14px}
-
-/* featured device */
-.feature-wrap{opacity:0;animation:heroIn .9s .48s cubic-bezier(.2,.8,.2,1) forwards}
-.feature{
-  position:relative;border-radius:26px;padding:16px;
-  background:linear-gradient(160deg,rgba(255,255,255,.1),rgba(255,255,255,.02));
-  border:1px solid var(--line-2);box-shadow:var(--shadow);
-  animation:floaty 7s ease-in-out 1.5s infinite;
-}
-.feature::before{content:"";position:absolute;left:24px;right:24px;top:1px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent)}
-@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-.feature-label{
-  display:flex;align-items:center;justify-content:space-between;
-  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
-  padding:2px 6px 12px;
-}
-.feature-label .live{display:inline-flex;align-items:center;gap:7px;color:var(--pink-2)}
-.feature-label .dot{width:8px;height:8px;border-radius:50%;background:var(--pink);box-shadow:0 0 0 0 rgba(255,61,119,.7);animation:pulse 2s infinite}
-@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(255,61,119,0)}100%{box-shadow:0 0 0 0 rgba(255,61,119,0)}}
-.feature-screen{position:relative;display:block;border-radius:16px;overflow:hidden;aspect-ratio:16/10;background:#0d0920}
-.feature-screen video{width:100%;height:100%;object-fit:cover;transition:transform .5s}
-.feature:hover .feature-screen video{transform:scale(1.04)}
-.feature-screen .pbtn{position:absolute;inset:0;display:grid;place-items:center;background:rgba(13,9,32,.22);opacity:0;transition:opacity .3s}
-.feature:hover .feature-screen .pbtn,.feature-screen:focus-visible .pbtn{opacity:1}
-.feature-screen .pbtn i{
-  width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);
-  border:1px solid rgba(255,255,255,.6);display:grid;place-items:center;color:#fff;font-size:19px;
-  padding-left:5px;transform:scale(.82);transition:transform .3s;
-}
-.feature:hover .feature-screen .pbtn i{transform:scale(1)}
-.feature-foot{display:flex;align-items:center;justify-content:space-between;padding:14px 6px 4px}
-.feature-foot .t{font-family:var(--disp);font-weight:700;font-size:18px}
-.feature-foot .play{font-family:var(--mono);font-size:12px;color:var(--tang);display:inline-flex;gap:6px;align-items:center}
-
-/* ---------- spec line ---------- */
-.stats{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.specline{
-  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px 22px;
-  padding:22px 0;margin:0;
-  font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
-}
-.specline span{white-space:nowrap}
-.specline b{color:var(--cream);font-weight:700}
-.specline .ok{color:var(--tang);display:inline-flex;align-items:center;gap:8px}
-.specline .ok::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--tang);box-shadow:0 0 0 0 rgba(255,178,76,.6);animation:pulse 2.4s infinite}
-.specline i{width:5px;height:5px;border-radius:50%;background:var(--muted-2);flex:0 0 auto}
-@media (max-width:560px){.specline i{display:none}}
-
-/* ---------- section scaffold ---------- */
-.section{padding:clamp(64px,9vw,120px) 0}
-.section-head{max-width:640px;margin-bottom:clamp(34px,5vw,54px)}
-.section-head h2{font-size:clamp(32px,5vw,52px);margin:16px 0 0}
-.section-head p{color:var(--muted);font-size:18px;margin:16px 0 0}
-
-/* ---------- the shelf (game grid) ---------- */
-.shelf{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-@media (max-width:1000px){.shelf{grid-template-columns:repeat(3,1fr)}}
-@media (max-width:680px){.shelf{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:420px){.shelf{grid-template-columns:1fr}}
-
-.tile{
-  position:relative;border-radius:20px;overflow:hidden;
-  background:
-    radial-gradient(120% 90% at 50% -10%, color-mix(in srgb,var(--hue) 26%, transparent), transparent 60%),
-    var(--card);
-  border:1px solid var(--line);
-  box-shadow:0 16px 34px -22px rgba(0,0,0,.9);
-  transition:transform .22s cubic-bezier(.2,.9,.2,1.2), box-shadow .22s, border-color .22s;
-  cursor:pointer;
-  /* snap-in initial state (JS toggles .in) */
-  opacity:0;transform:translateY(26px) scale(.94);
-}
-.tile.in{opacity:1;transform:none;transition:opacity .5s ease, transform .62s cubic-bezier(.18,1.25,.35,1)}
-.tile:hover{transform:translateY(-6px);border-color:color-mix(in srgb,var(--hue) 60%, var(--line-2));box-shadow:0 26px 50px -22px color-mix(in srgb,var(--hue) 55%, black)}
-
-.tile-art{position:relative;aspect-ratio:1/1;overflow:hidden}
-.tile-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.tile-icon{z-index:1;transition:transform .4s, opacity .4s}
-.tile-shot{opacity:0;transform:scale(1.06);transition:opacity .4s, transform .6s}
-.tile:hover .tile-icon{opacity:0;transform:scale(1.08)}
-.tile:hover .tile-shot{opacity:1;transform:scale(1)}
-
-.tile-meta{
-  display:flex;flex-direction:column;gap:9px;padding:13px 14px 14px;
-  background:linear-gradient(0deg, color-mix(in srgb,var(--hue) 13%, var(--card)), var(--card));
-  border-top:1px solid color-mix(in srgb,var(--hue) 24%, var(--line));
-}
-.tile-name{
-  font-family:var(--disp);font-weight:700;font-size:15.5px;letter-spacing:-.01em;line-height:1.14;
-  display:flex;align-items:center;gap:8px;
-}
-.tile-name::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--hue);flex:0 0 auto;box-shadow:0 0 10px -1px var(--hue)}
-.tile-tags{display:flex;gap:7px;flex-wrap:wrap}
-.mtag{
-  font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-  padding:4px 9px;border-radius:999px;
-  color:color-mix(in srgb, var(--hue) 55%, white);
-  background:color-mix(in srgb, var(--hue) 15%, transparent);
-  border:1px solid color-mix(in srgb, var(--hue) 38%, transparent);
-}
-.dim{
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
-  padding:4px 9px;border-radius:999px;color:var(--cream);border:1px solid var(--line-2);
-}
-.tile-play{
-  position:absolute;top:12px;right:12px;z-index:4;width:36px;height:36px;border-radius:50%;
-  display:grid;place-items:center;font-size:12px;color:#0d0920;background:rgba(255,255,255,.92);
-  opacity:0;transform:scale(.7);transition:opacity .22s, transform .22s;
-}
-.tile:hover .tile-play,.tile:focus-within .tile-play{opacity:1;transform:scale(1)}
-.tile-play:hover{background:#fff}
-
-/* ---------- about ---------- */
-.about-grid{display:grid;grid-template-columns:300px 1fr;gap:clamp(30px,5vw,64px);align-items:start}
-@media (max-width:800px){.about-grid{grid-template-columns:1fr;gap:34px}}
-.portrait{position:relative}
-.portrait img{border-radius:22px;border:1px solid var(--line-2);box-shadow:var(--shadow);width:100%;aspect-ratio:1/1;object-fit:cover}
-.portrait .badge{
-  position:absolute;bottom:-14px;left:-14px;background:var(--ink-2);border:1px solid var(--line-2);
-  border-radius:14px;padding:11px 15px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--tang);box-shadow:var(--shadow);
-}
-.about-body p{font-size:19px;color:var(--muted);margin:0 0 20px;max-width:56ch}
-.about-body p b{color:var(--cream);font-weight:700}
-.chips{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 30px}
-.chip{
-  font-family:var(--mono);font-size:12px;letter-spacing:.04em;padding:8px 13px;border-radius:11px;
-  background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--cream);
-}
-.chip.soft{color:var(--muted)}
-.dl-row{display:flex;flex-wrap:wrap;gap:12px}
-
-/* ---------- contact ---------- */
-.contact{position:relative}
-.contact-card{
-  border-radius:28px;padding:clamp(34px,6vw,68px);
-  background:linear-gradient(150deg,rgba(255,61,119,.14),rgba(255,178,76,.08) 55%,rgba(255,255,255,.03));
-  border:1px solid var(--line-2);box-shadow:var(--shadow);text-align:center;
-}
-.contact-card h2{font-size:clamp(30px,5vw,54px);max-width:16ch;margin:16px auto 0}
-.contact-card p{color:var(--muted);font-size:18px;margin:18px auto 30px;max-width:44ch}
-.contact-cta{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
-.reachrow{display:flex;flex-wrap:wrap;gap:8px 28px;justify-content:center;margin-top:34px;font-family:var(--mono);font-size:13px;color:var(--muted)}
-.reachrow a{color:var(--cream);border-bottom:1px solid var(--line-2);padding-bottom:2px}
-.reachrow a:hover{border-color:var(--pink)}
-.reachrow span{color:var(--muted-2)}
-
-/* ---------- footer ---------- */
-footer{border-top:1px solid var(--line);padding:34px 0}
-footer .wrap{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
-footer .fnote{font-family:var(--mono);font-size:12px;color:var(--muted-2);letter-spacing:.04em}
-
-/* ---------- video lightbox ---------- */
-.lightbox{position:fixed;inset:0;z-index:100;display:none;place-items:center;padding:clamp(16px,4vw,40px);
-  background:rgba(8,5,20,.84);backdrop-filter:blur(12px)}
-.lightbox.open{display:grid;animation:lbin .24s ease}
-@keyframes lbin{from{opacity:0}to{opacity:1}}
-.lb-stage{position:relative;width:min(880px,100%);animation:lbpop .34s cubic-bezier(.2,1.3,.4,1)}
-@keyframes lbpop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
-.lb-title{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;text-align:center}
-.lb-title b{color:var(--cream);font-weight:700}
-.lb-stage video{width:100%;max-height:74vh;border-radius:16px;background:#000;border:1px solid var(--line-2);box-shadow:var(--shadow);display:block}
-.lb-close{position:fixed;top:18px;right:20px;width:46px;height:46px;border-radius:50%;
-  background:rgba(255,255,255,.08);border:1px solid var(--line-2);color:var(--cream);font-size:17px;cursor:pointer;z-index:101;
-  display:grid;place-items:center;transition:background .2s,transform .2s}
-.lb-close:hover{background:rgba(255,255,255,.18);transform:rotate(90deg)}
-
-:focus-visible{outline:3px solid var(--pink-2);outline-offset:3px;border-radius:6px}
-
-@media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
-  .tile{opacity:1;transform:none}
-  .feature-wrap,.hero-copy .eyebrow,.hero-copy .lede,.hero-copy .hero-cta,.hero h1 .line{opacity:1}
-}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<header class="topbar">
-  <div class="wrap">
-    <a class="brand" href="#top">
-      <span class="monogram">SH</span>
-      <span>Sakhawat Hossain<small>Unity 3D Developer</small></span>
-    </a>
-    <nav class="nav">
-      <a class="navlink" href="#work">Work</a>
-      <a class="navlink" href="#about">About</a>
-      <a class="navlink" href="#contact">Contact</a>
-      <a class="btn btn-ghost" href="Sakhawat_Hossain_CV.pdf" target="_blank" rel="noopener">Résumé</a>
-    </nav>
-  </div>
+<!-- ===== CRT power-on boot flash ===== -->
+<div class="boot" id="boot"><span class="boot-line"></span></div>
+
+<!-- ===== CRT screen overlays (non-interactive) ===== -->
+<div class="crt crt-scanlines" aria-hidden="true"></div>
+<div class="crt crt-scanbar" aria-hidden="true"></div>
+<div class="crt crt-flicker" aria-hidden="true"></div>
+<div class="crt crt-vignette" aria-hidden="true"></div>
+
+<!-- ===== HUD / NAV ===== -->
+<header class="hud" id="top">
+  <a class="hud-brand" href="#top" aria-label="Sakhawat Hossain — home">
+    <span class="coin">◉</span>
+    <span class="hud-name">SAKHAWAT<em>1UP</em></span>
+  </a>
+  <nav class="hud-nav" id="menu">
+    <a href="#games">GAMES</a>
+    <a href="#player">PLAYER</a>
+    <a href="#career">CAREER</a>
+    <a href="#continue">CONTINUE</a>
+    <span class="hud-status"><span class="blip"></span>ONLINE</span>
+  </nav>
+  <button class="hud-burger" id="burger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </header>
 
-<main id="top">
+<main>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="wrap hero-grid">
-      <div class="hero-copy">
-        <span class="eyebrow">Unity 3D Developer — 11 Titles Shipped</span>
-        <h1>
-          <span class="line l1">Games with a</span>
-          <span class="line l2"><span class="click" tabindex="0" role="button" aria-label="satisfying click — tap for a satisfying pop">satisfying click.</span></span>
-        </h1>
-        <p class="lede">I'm <b>Sakhawat Hossain</b>. I build small, tactile, hyper-casual games in Unity — the kind you pick up for one round and put down an hour later.</p>
-        <div class="hero-cta">
-          <a class="btn btn-primary" href="https://play.unity.com/en/games/c1a7f93d-f002-45d3-813c-6ad9d46719ca/little-adventure-3d" target="_blank" rel="noopener">Play Little Adventure 3D →</a>
-          <a class="btn btn-ghost" href="#work">See the work</a>
-        </div>
+  <!-- ============================================================
+       TITLE SCREEN  (hero)
+  ============================================================= -->
+  <section class="title-screen" id="title">
+    <canvas class="starfield" id="starfield" aria-hidden="true"></canvas>
+    <div class="floor-grid" aria-hidden="true"></div>
+
+    <div class="title-inner">
+      <p class="marquee-tag reveal" style="--d:.05s">◂ INSERT COIN ▸&nbsp; PLAYER ONE READY</p>
+
+      <h1 class="marquee reveal" style="--d:.15s"><span class="glitch" data-text="SAKHAWAT HOSSAIN">SAKHAWAT HOSSAIN</span></h1>
+
+      <p class="subtitle reveal" style="--d:.3s">UNITY&nbsp;3D GAME DEVELOPER</p>
+      <p class="blurb reveal" style="--d:.42s">Eleven shipped hyper-casual titles. One player, high score pending. Small, tactile games with a satisfying <span class="hl">click</span>.</p>
+
+      <!-- HUD stat bar -->
+      <div class="hud-stats reveal" style="--d:.54s">
+        <div class="stat"><span class="stat-k">GAMES</span><span class="stat-v">11</span></div>
+        <div class="stat"><span class="stat-k">ENGINE</span><span class="stat-v">UNITY</span></div>
+        <div class="stat"><span class="stat-k">CODE</span><span class="stat-v">C#</span></div>
+        <div class="stat"><span class="stat-k">STATUS</span><span class="stat-v go">OPEN</span></div>
       </div>
 
-      <div class="feature-wrap">
-        <div class="feature">
-          <div class="feature-label">
-            <span>Featured Title</span>
-            <span class="live"><span class="dot"></span>Live on Unity Play</span>
-          </div>
+      <div class="title-cta reveal" style="--d:.66s">
+        <a class="abtn abtn-amber" href="#games">▸ PRESS START</a>
+        <button class="abtn abtn-cyan" data-video="Show%20Case%20Video.mp4" data-title="LITTLE ADVENTURE 3D — SHOWREEL">◉ INSERT COIN</button>
+      </div>
+
+      <p class="press-start reveal" style="--d:.8s">▼ INSERT COIN TO CONTINUE ▼</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SELECT YOUR GAME
+  ============================================================= -->
+  <section class="screen" id="games">
+    <div class="wrap">
+      <header class="screen-head reveal">
+        <span class="screen-no">// 01</span>
+        <h2 class="screen-title">SELECT YOUR GAME</h2>
+        <p class="screen-sub">Eleven cabinets on the floor. Hover to preview, hit <b>▶ PLAY</b> to watch the reel.</p>
+        <div class="divider"></div>
+      </header>
+
+      <!-- MAIN ATTRACTION: featured -->
+      <article class="feature reveal" style="--c:var(--magenta)">
+        <div class="feature-in">
           <a class="feature-screen" href="https://play.unity.com/en/games/c1a7f93d-f002-45d3-813c-6ad9d46719ca/little-adventure-3d" target="_blank" rel="noopener" aria-label="Play Little Adventure 3D on Unity Play">
             <video src="Show%20Case%20Video.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
-            <span class="pbtn"><i>▶</i></span>
+            <span class="scan-mini" aria-hidden="true"></span>
+            <span class="feature-play"><i class="fa-solid fa-play"></i></span>
           </a>
-          <div class="feature-foot">
-            <span class="t">Little Adventure 3D</span>
-            <span class="play">▶ Play in browser</span>
+          <div class="feature-body">
+            <span class="tagpill">★ MAIN ATTRACTION</span>
+            <h3 class="feature-title">LITTLE ADVENTURE 3D</h3>
+            <p class="feature-desc">The featured cabinet — a 3D adventure playable right now in your browser on Unity Play. No coin required.</p>
+            <div class="feature-cta">
+              <a class="abtn abtn-amber" href="https://play.unity.com/en/games/c1a7f93d-f002-45d3-813c-6ad9d46719ca/little-adventure-3d" target="_blank" rel="noopener">▸ PLAY NOW</a>
+              <button class="abtn abtn-ghost" data-video="Show%20Case%20Video.mp4" data-title="LITTLE ADVENTURE 3D — SHOWREEL">◉ WATCH REEL</button>
+            </div>
           </div>
         </div>
+      </article>
+
+      <!-- CABINET GRID -->
+      <div class="cabinets" id="cabinets">
+
+        <article class="game reveal" style="--c:var(--amber)"
+          data-video="Game%20Video/Balls%20Collect%20Mania.mp4" data-title="BALLS COLLECT MANIA"
+          data-base="Game%20Screenshoot/Balls%20Collect%20Mania/" data-shots="1,2,3,4">
+          <div class="game-in">
+            <span class="game-strip"></span>
+            <div class="game-art">
+              <img class="g-icon" src="Game%20Icons/Balls%20Collect%20Mania/download.png" alt="Balls Collect Mania icon" loading="lazy">
+              <img class="g-shot a" alt="" aria-hidden="true"><img class="g-shot b" alt="" aria-hidden="true">
+              <span class="game-play"><i class="fa-solid fa-play"></i> PLAY</span>
+            </div>
+            <div class="game-meta"><h3 class="game-name">Balls Collect Mania</h3><span class="game-mode">MODE: COLLECT</span></div>
+          </div>
+        </article>
+
+        <article class="game reveal" style="--c:var(--magenta)"
+          data-video="Game%20Video/Block%20Pack%20Mania.mp4" data-title="BLOCK PACK JAM"
+          data-base="Game%20Screenshoot/Block%20Pack%20Jam/" data-shots="1,2,3,4,5">
+          <div class="game-in">
+            <span class="game-strip"></span>
+            <div class="game-art">
+              <img class="g-icon" src="Game%20Icons/Block%20Pack%20Jam/download.png" alt="Block Pack Jam icon" loading="lazy">
+              <img class="g-shot a" alt="" aria-hidden="true"><img class="g-shot b" alt="" aria-hidden="true">
+              <span class="game-play"><i class="fa-solid fa-play"></i> PLAY</span>
+            </div>
+            <div class="game-meta"><h3 class="game-name">Block Pack Jam</h3><span class="game-mode">MODE: PACK</span></div>
+          </div>
+        </article>
+
+        <article class="game reveal" style="--c:var(--purple)"
+          data-video="Game%20Video/Color%20Shape%20Jam.mp4" data-title="COLOR SHAPE JAM"
+          data-base="Game%20Screenshoot/Color%20Shape%20Jam/" data-shots="1,2,3,4">
+          <div class="game-in">
+            <span class="game-strip"></span>
+            <div class="game-art">
+              <img class="g-icon" src="Game%20Icons/Color%20Shape%20Jam/download%20(1).png" alt="Color Shape Jam icon" loading="lazy">
+              <img class="g-shot a" alt="" aria-hidden="true"><img class="g-shot b" alt="" aria-hidden="true">
+              <span class="game-play"><i class="fa-solid fa-play"></i> PLAY</span>
+            </div>
+            <div class="game-meta"><h3 class="game-name">Color Shape Jam</h3><span class="game-mode">MODE: MATCH</span></div>
+          </div>
+        </article>
+
+        <article class="game reveal" style="--c:var(--cyan)"
+          data-video="Game%20Video/Cup%20Jam%203D.mp4" data-title="CUP JAM 3D"
+          data-base="Game%20Screenshoot/Cup%20Jam%203D/" data-shots="1,2,3,4">
+          <div class="game-in">
+            <span class="game-strip"></span>
+            <div class="game-art">
+              <img class="g-icon" src="Game%20Icons/Cup%20Jam%203D/download.png" alt="Cup Jam 3D icon" loading="lazy">
+              <img class="g-shot a" alt="" aria-hidden="true"><img class="g-shot b" alt="" aria-hidden="true">
+              <span class="game-play"><i class="fa-solid fa-play"></i> PLAY</span>
+            </div>
+            <div class="game-meta"><h3 class="game-name">Cup Jam 3D</h3><span class="game-mode">MODE: STACK · 3D</span></div>
+          </div>
+        </article>
+
+        <article class="game reveal" style="--c:var(--green)"
+          data-video="Game%20Video/Energy%20Metaverse%20Creator.mp4" data-title="ENERGY METAVERSE CREATOR"
+          data-base="Game%20Screenshoot/Energy%20Metaverse%20Creator/" data-shots="0,1,2,3">
+          <div class="game-in">
+            <span class="game-strip"></span>
+            <div class="game-art">
+              <img class="g-icon" src="Game%20Icons/Energy%20Metaverse%20Creator/download%20(1).png" alt="Energy Metaverse Creator icon" loading="lazy">
+              <img class="g-shot a" alt="" aria-hidden="true"><img class="g-shot b" alt="" aria-hidden="true">
+              <span class="game-play"><i class="fa-solid fa-play"></i> PLAY</span>
+            </div>
+            <div class="game-meta"><h3 class="game-name">Energy Metaverse Creator</h3><span class="game-mode">MODE: SANDBOX</span></div>
+          </div>
+        </article>
+
+        <article class="game reveal" style="--c:var(--cyan)"
+          data-video="Game%20Video/Fish%20Sort.mp4" data-title="FISH SORT"
+          data-base="Game%20Screenshoot/Fish%20Sort/" data-shots="1,2,3,4,5,6">
+          <div class="game-in">
+            <span class="game-strip"></span>
+            <div class="game-art">
+              <img class="g-icon" src="Game%20Icons/Fish%20Sort/download.png" alt="Fish Sort icon" loading="lazy">
+              <img class="g-shot a" alt="" aria-hidden="true"><img class="g-shot b" alt="" aria-hidden="true">
+              <span class="game-play"><i class="fa-solid fa-play"></i> PLAY</span>
+            </div>
+            <div class="game-meta"><h3 class="game-name">Fish Sort</h3><span class="game-mode">MODE: SORT</span></div>
+          </div>
+        </article>
+
+        <article class="game reveal" style="--c:var(--magenta)"
+          data-video="Game%20Video/Messy%20Room%20Jam.mp4" data-title="MESSY ROOM JAM"
+          data-base="Game%20Screenshoot/Messy%20Room%20Jam/" data-shots="1,2,3,4,5">
+          <div class="game-in">
+            <span class="game-strip"></span>
+            <div class="game-art">
+              <img class="g-icon" src="Game%20Icons/Messy%20Room%20Jam/download%20(1).png" alt="Messy Room Jam icon" loading="lazy">
+              <img class="g-shot a" alt="" aria-hidden="true"><img class="g-shot b" alt="" aria-hidden="true">
+              <span class="game-play"><i class="fa-solid fa-play"></i> PLAY</span>
+            </div>
+            <div class="game-meta"><h3 class="game-name">Messy Room Jam</h3><span class="game-mode">MODE: TIDY</span></div>
+          </div>
+        </article>
+
+        <article class="game reveal" style="--c:var(--amber)"
+          data-video="Game%20Video/Plate%20Jam%203D.mp4" data-title="PLATE JAM 3D"
+          data-base="Game%20Screenshoot/Plate%20Jam%203D/" data-shots="1,2,3,4,5">
+          <div class="game-in">
+            <span class="game-strip"></span>
+            <div class="game-art">
+              <img class="g-icon" src="Game%20Icons/Plate%20Jam%203D/download%20(1).png" alt="Plate Jam 3D icon" loading="lazy">
+              <img class="g-shot a" alt="" aria-hidden="true"><img class="g-shot b" alt="" aria-hidden="true">
+              <span class="game-play"><i class="fa-solid fa-play"></i> PLAY</span>
+            </div>
+            <div class="game-meta"><h3 class="game-name">Plate Jam 3D</h3><span class="game-mode">MODE: SERVE · 3D</span></div>
+          </div>
+        </article>
+
+        <article class="game reveal" style="--c:var(--purple)"
+          data-video="Game%20Video/Rescue%20Puzzle.mp4" data-title="RESCUE PUZZLE"
+          data-base="Game%20Screenshoot/Rescue%20Puzzle/" data-shots="1,2,3,4,5">
+          <div class="game-in">
+            <span class="game-strip"></span>
+            <div class="game-art">
+              <img class="g-icon" src="Game%20Icons/Rescue%20Puzzle/download.png" alt="Rescue Puzzle icon" loading="lazy">
+              <img class="g-shot a" alt="" aria-hidden="true"><img class="g-shot b" alt="" aria-hidden="true">
+              <span class="game-play"><i class="fa-solid fa-play"></i> PLAY</span>
+            </div>
+            <div class="game-meta"><h3 class="game-name">Rescue Puzzle</h3><span class="game-mode">MODE: PULL-PIN</span></div>
+          </div>
+        </article>
+
+        <article class="game reveal" style="--c:var(--green)"
+          data-video="Game%20Video/Sand%20Jam%20Rush.mp4" data-title="SAND JAM RUSH"
+          data-base="Game%20Screenshoot/Sand%20Jam%20Rush/" data-shots="1,2,3,4,5">
+          <div class="game-in">
+            <span class="game-strip"></span>
+            <div class="game-art">
+              <img class="g-icon" src="Game%20Icons/Sand%20Jam%20Rush/download.png" alt="Sand Jam Rush icon" loading="lazy">
+              <img class="g-shot a" alt="" aria-hidden="true"><img class="g-shot b" alt="" aria-hidden="true">
+              <span class="game-play"><i class="fa-solid fa-play"></i> PLAY</span>
+            </div>
+            <div class="game-meta"><h3 class="game-name">Sand Jam Rush</h3><span class="game-mode">MODE: FILL</span></div>
+          </div>
+        </article>
+
+        <article class="game reveal" style="--c:var(--cyan)"
+          data-video="Game%20Video/Water%20Color%20Jam.mp4" data-title="WATER COLOR JAM"
+          data-base="Game%20Screenshoot/Water%20Color%20Jam/" data-shots="1,2,3,4">
+          <div class="game-in">
+            <span class="game-strip"></span>
+            <div class="game-art">
+              <img class="g-icon" src="Game%20Icons/Water%20Color%20Jam/download.png" alt="Water Color Jam icon" loading="lazy">
+              <img class="g-shot a" alt="" aria-hidden="true"><img class="g-shot b" alt="" aria-hidden="true">
+              <span class="game-play"><i class="fa-solid fa-play"></i> PLAY</span>
+            </div>
+            <div class="game-meta"><h3 class="game-name">Water Color Jam</h3><span class="game-mode">MODE: POUR</span></div>
+          </div>
+        </article>
+
       </div>
     </div>
   </section>
 
-  <!-- SPEC LINE -->
-  <section class="stats">
+  <!-- ============================================================
+       PLAYER STATS  (about)
+  ============================================================= -->
+  <section class="screen" id="player">
     <div class="wrap">
-      <p class="specline">
-        <span><b>Unity</b> + C#</span><i></i>
-        <span><b>11</b> titles shipped</span><i></i>
-        <span>Hyper-casual &amp; casual</span><i></i>
-        <span>Learning shaders</span><i></i>
-        <span class="ok">Open to work</span>
-      </p>
+      <header class="screen-head reveal">
+        <span class="screen-no">// 02</span>
+        <h2 class="screen-title">PLAYER STATS</h2>
+        <div class="divider"></div>
+      </header>
+
+      <div class="player">
+        <div class="player-card reveal">
+          <div class="player-card-in">
+            <img class="avatar" src="Profile%20Picture.jpg" alt="Portrait of Sakhawat Hossain">
+            <div class="player-id">
+              <span class="player-name">SAKHAWAT HOSSAIN</span>
+              <span class="player-class">CLASS — HYPER-CASUAL DEV</span>
+              <span class="player-loc"><i class="fa-solid fa-location-dot"></i> BANGLADESH · <span class="go">READY</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="player-body reveal">
+          <p class="term"><span class="term-c">&gt;</span> I design and build hyper-casual games in Unity, from first prototype to shipped title. My work lives in the small stuff — the weight of a drop, the snap of a piece landing, the exact curve of a satisfying animation.</p>
+          <p class="term"><span class="term-c">&gt;</span> Currently grinding XP in <b>shader programming</b> to push the look further. Always up for co-op on game design.</p>
+
+          <h3 class="abil-head">ABILITIES</h3>
+          <div class="abilities">
+            <div class="abil"><span class="abil-n">UNITY</span><span class="abil-bar"><i style="--lv:96%"></i></span></div>
+            <div class="abil"><span class="abil-n">C#</span><span class="abil-bar"><i style="--lv:92%"></i></span></div>
+            <div class="abil"><span class="abil-n">HYPER-CASUAL DESIGN</span><span class="abil-bar"><i style="--lv:94%"></i></span></div>
+            <div class="abil"><span class="abil-n">3D GAMEPLAY</span><span class="abil-bar"><i style="--lv:85%"></i></span></div>
+            <div class="abil"><span class="abil-n">SHADERS</span><span class="abil-bar"><i style="--lv:60%"></i></span></div>
+            <div class="abil"><span class="abil-n">MOBILE OPTIMIZATION</span><span class="abil-bar"><i style="--lv:80%"></i></span></div>
+          </div>
+
+          <div class="loadout">
+            <a class="abtn abtn-ghost" href="Sakhawat_Hossain_CV.pdf" target="_blank" rel="noopener"><i class="fa-solid fa-floppy-disk"></i> LOAD CV</a>
+            <a class="abtn abtn-ghost" href="Cover%20Letter.pdf" target="_blank" rel="noopener"><i class="fa-solid fa-envelope-open-text"></i> COVER LETTER</a>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- WORK -->
-  <section class="section" id="work">
+  <!-- ============================================================
+       CAREER PATH  (level map / timeline)
+  ============================================================= -->
+  <section class="screen" id="career">
     <div class="wrap">
-      <div class="section-head">
-        <span class="eyebrow">The Shelf</span>
-        <h2>Eleven games, one satisfying loop.</h2>
-        <p>Every title is built around a single tactile mechanic — sort it, stack it, pack it, pour it. Hover a tile to peek inside; tap ▶ for gameplay.</p>
-      </div>
+      <header class="screen-head reveal">
+        <span class="screen-no">// 03</span>
+        <h2 class="screen-title">CAREER PATH</h2>
+        <p class="screen-sub">Stages cleared — three studios and a B.Sc., all running on Unity.</p>
+        <div class="divider"></div>
+      </header>
 
-      <div class="shelf" id="shelf">
+      <ol class="timeline">
+        <li class="tl-item left reveal" style="--c:var(--green)">
+          <span class="tl-node"></span>
+          <div class="tl-card">
+            <div class="tl-card-in">
+              <span class="tl-ico"><i class="fa-solid fa-briefcase"></i></span>
+              <div class="tl-txt">
+                <span class="tl-tag">JOB · LATEST</span>
+                <h3 class="tl-role">Game Developer (Unity)</h3>
+                <p class="tl-org">Riseup Labs</p>
+                <p class="tl-date">2024.02 — 2024.11</p>
+              </div>
+            </div>
+          </div>
+        </li>
 
-        <article class="tile" style="--hue:#FF9F45">
-          <div class="tile-art">
-            <img class="tile-icon" src="Game%20Icons/Balls%20Collect%20Mania/download.png" alt="Balls Collect Mania icon" loading="lazy">
-            <img class="tile-shot" src="Game%20Screenshoot/Balls%20Collect%20Mania/1.png" alt="" aria-hidden="true" loading="lazy">
+        <li class="tl-item right reveal" style="--c:var(--cyan)">
+          <span class="tl-node"></span>
+          <div class="tl-card">
+            <div class="tl-card-in">
+              <span class="tl-ico"><i class="fa-solid fa-briefcase"></i></span>
+              <div class="tl-txt">
+                <span class="tl-tag">JOB</span>
+                <h3 class="tl-role">Digital Twin Engineer (Unity)</h3>
+                <p class="tl-org">IDARE Bangladesh Ltd</p>
+                <p class="tl-date">2021.12 — 2023.01</p>
+              </div>
+            </div>
           </div>
-          <div class="tile-meta">
-            <h3 class="tile-name">Balls Collect Mania</h3>
-            <div class="tile-tags"><span class="mtag">Collect</span></div>
-          </div>
-          <a class="tile-play" href="Game%20Video/Balls%20Collect%20Mania.mp4" target="_blank" rel="noopener" aria-label="Watch Balls Collect Mania gameplay">▶</a>
-        </article>
+        </li>
 
-        <article class="tile" style="--hue:#FF4D8D">
-          <div class="tile-art">
-            <img class="tile-icon" src="Game%20Icons/Block%20Pack%20Jam/download.png" alt="Block Pack Jam icon" loading="lazy">
-            <img class="tile-shot" src="Game%20Screenshoot/Block%20Pack%20Jam/1.png" alt="" aria-hidden="true" loading="lazy">
+        <li class="tl-item left reveal" style="--c:var(--amber)">
+          <span class="tl-node"></span>
+          <div class="tl-card">
+            <div class="tl-card-in">
+              <span class="tl-ico"><i class="fa-solid fa-briefcase"></i></span>
+              <div class="tl-txt">
+                <span class="tl-tag">INTERNSHIP</span>
+                <h3 class="tl-role">Game Developer Intern (Unity)</h3>
+                <p class="tl-org">MassiveStar Studio Ltd</p>
+                <p class="tl-date">2021.06 — 2021.12</p>
+              </div>
+            </div>
           </div>
-          <div class="tile-meta">
-            <h3 class="tile-name">Block Pack Jam</h3>
-            <div class="tile-tags"><span class="mtag">Pack</span></div>
-          </div>
-          <a class="tile-play" href="Game%20Video/Block%20Pack%20Mania.mp4" target="_blank" rel="noopener" aria-label="Watch Block Pack Jam gameplay">▶</a>
-        </article>
+        </li>
 
-        <article class="tile" style="--hue:#B057FF">
-          <div class="tile-art">
-            <img class="tile-icon" src="Game%20Icons/Color%20Shape%20Jam/download%20(1).png" alt="Color Shape Jam icon" loading="lazy">
-            <img class="tile-shot" src="Game%20Screenshoot/Color%20Shape%20Jam/1.png" alt="" aria-hidden="true" loading="lazy">
+        <li class="tl-item right reveal" style="--c:var(--purple)">
+          <span class="tl-node"></span>
+          <div class="tl-card">
+            <div class="tl-card-in">
+              <span class="tl-ico"><i class="fa-solid fa-graduation-cap"></i></span>
+              <div class="tl-txt">
+                <span class="tl-tag">EDUCATION</span>
+                <h3 class="tl-role">B.Sc. — Computer Science &amp; Engineering</h3>
+                <p class="tl-org">Bangladesh University of Business and Technology</p>
+                <p class="tl-date">2016.07 — 2021.06</p>
+              </div>
+            </div>
           </div>
-          <div class="tile-meta">
-            <h3 class="tile-name">Color Shape Jam</h3>
-            <div class="tile-tags"><span class="mtag">Match</span></div>
-          </div>
-          <a class="tile-play" href="Game%20Video/Color%20Shape%20Jam.mp4" target="_blank" rel="noopener" aria-label="Watch Color Shape Jam gameplay">▶</a>
-        </article>
-
-        <article class="tile" style="--hue:#46C7FF">
-          <div class="tile-art">
-            <img class="tile-icon" src="Game%20Icons/Cup%20Jam%203D/download.png" alt="Cup Jam 3D icon" loading="lazy">
-            <img class="tile-shot" src="Game%20Screenshoot/Cup%20Jam%203D/1.png" alt="" aria-hidden="true" loading="lazy">
-          </div>
-          <div class="tile-meta">
-            <h3 class="tile-name">Cup Jam 3D</h3>
-            <div class="tile-tags"><span class="mtag">Stack</span><span class="dim">3D</span></div>
-          </div>
-          <a class="tile-play" href="Game%20Video/Cup%20Jam%203D.mp4" target="_blank" rel="noopener" aria-label="Watch Cup Jam 3D gameplay">▶</a>
-        </article>
-
-        <article class="tile" style="--hue:#7BE04E">
-          <div class="tile-art">
-            <img class="tile-icon" src="Game%20Icons/Energy%20Metaverse%20Creator/download%20(1).png" alt="Energy Metaverse Creator icon" loading="lazy">
-            <img class="tile-shot" src="Game%20Screenshoot/Energy%20Metaverse%20Creator/1.png" alt="" aria-hidden="true" loading="lazy">
-          </div>
-          <div class="tile-meta">
-            <h3 class="tile-name">Energy Metaverse Creator</h3>
-            <div class="tile-tags"><span class="mtag">Sandbox</span></div>
-          </div>
-          <a class="tile-play" href="Game%20Video/Energy%20Metaverse%20Creator.mp4" target="_blank" rel="noopener" aria-label="Watch Energy Metaverse Creator gameplay">▶</a>
-        </article>
-
-        <article class="tile" style="--hue:#2FE3C3">
-          <div class="tile-art">
-            <img class="tile-icon" src="Game%20Icons/Fish%20Sort/download.png" alt="Fish Sort icon" loading="lazy">
-            <img class="tile-shot" src="Game%20Screenshoot/Fish%20Sort/1.png" alt="" aria-hidden="true" loading="lazy">
-          </div>
-          <div class="tile-meta">
-            <h3 class="tile-name">Fish Sort</h3>
-            <div class="tile-tags"><span class="mtag">Sort</span></div>
-          </div>
-          <a class="tile-play" href="Game%20Video/Fish%20Sort.mp4" target="_blank" rel="noopener" aria-label="Watch Fish Sort gameplay">▶</a>
-        </article>
-
-        <article class="tile" style="--hue:#FF6B5B">
-          <div class="tile-art">
-            <img class="tile-icon" src="Game%20Icons/Messy%20Room%20Jam/download%20(1).png" alt="Messy Room Jam icon" loading="lazy">
-            <img class="tile-shot" src="Game%20Screenshoot/Messy%20Room%20Jam/1.png" alt="" aria-hidden="true" loading="lazy">
-          </div>
-          <div class="tile-meta">
-            <h3 class="tile-name">Messy Room Jam</h3>
-            <div class="tile-tags"><span class="mtag">Tidy</span></div>
-          </div>
-          <a class="tile-play" href="Game%20Video/Messy%20Room%20Jam.mp4" target="_blank" rel="noopener" aria-label="Watch Messy Room Jam gameplay">▶</a>
-        </article>
-
-        <article class="tile" style="--hue:#FFC24B">
-          <div class="tile-art">
-            <img class="tile-icon" src="Game%20Icons/Plate%20Jam%203D/download%20(1).png" alt="Plate Jam 3D icon" loading="lazy">
-            <img class="tile-shot" src="Game%20Screenshoot/Plate%20Jam%203D/1.png" alt="" aria-hidden="true" loading="lazy">
-          </div>
-          <div class="tile-meta">
-            <h3 class="tile-name">Plate Jam 3D</h3>
-            <div class="tile-tags"><span class="mtag">Serve</span><span class="dim">3D</span></div>
-          </div>
-          <a class="tile-play" href="Game%20Video/Plate%20Jam%203D.mp4" target="_blank" rel="noopener" aria-label="Watch Plate Jam 3D gameplay">▶</a>
-        </article>
-
-        <article class="tile" style="--hue:#5B8CFF">
-          <div class="tile-art">
-            <img class="tile-icon" src="Game%20Icons/Rescue%20Puzzle/download.png" alt="Rescue Puzzle icon" loading="lazy">
-            <img class="tile-shot" src="Game%20Screenshoot/Rescue%20Puzzle/1.png" alt="" aria-hidden="true" loading="lazy">
-          </div>
-          <div class="tile-meta">
-            <h3 class="tile-name">Rescue Puzzle</h3>
-            <div class="tile-tags"><span class="mtag">Pull-Pin</span></div>
-          </div>
-          <a class="tile-play" href="Game%20Video/Rescue%20Puzzle.mp4" target="_blank" rel="noopener" aria-label="Watch Rescue Puzzle gameplay">▶</a>
-        </article>
-
-        <article class="tile" style="--hue:#F2A54E">
-          <div class="tile-art">
-            <img class="tile-icon" src="Game%20Icons/Sand%20Jam%20Rush/download.png" alt="Sand Jam Rush icon" loading="lazy">
-            <img class="tile-shot" src="Game%20Screenshoot/Sand%20Jam%20Rush/1.png" alt="" aria-hidden="true" loading="lazy">
-          </div>
-          <div class="tile-meta">
-            <h3 class="tile-name">Sand Jam Rush</h3>
-            <div class="tile-tags"><span class="mtag">Fill</span></div>
-          </div>
-          <a class="tile-play" href="Game%20Video/Sand%20Jam%20Rush.mp4" target="_blank" rel="noopener" aria-label="Watch Sand Jam Rush gameplay">▶</a>
-        </article>
-
-        <article class="tile" style="--hue:#19C3B3">
-          <div class="tile-art">
-            <img class="tile-icon" src="Game%20Icons/Water%20Color%20Jam/download.png" alt="Water Color Jam icon" loading="lazy">
-            <img class="tile-shot" src="Game%20Screenshoot/Water%20Color%20Jam/1.png" alt="" aria-hidden="true" loading="lazy">
-          </div>
-          <div class="tile-meta">
-            <h3 class="tile-name">Water Color Jam</h3>
-            <div class="tile-tags"><span class="mtag">Pour</span></div>
-          </div>
-          <a class="tile-play" href="Game%20Video/Water%20Color%20Jam.mp4" target="_blank" rel="noopener" aria-label="Watch Water Color Jam gameplay">▶</a>
-        </article>
-
-      </div>
+        </li>
+      </ol>
     </div>
   </section>
 
-  <!-- ABOUT -->
-  <section class="section" id="about">
-    <div class="wrap about-grid">
-      <div class="portrait">
-        <img src="Profile%20Picture.jpg" alt="Portrait of Sakhawat Hossain">
-        <span class="badge">Based in Bangladesh</span>
-      </div>
-      <div class="about-body">
-        <span class="eyebrow">About</span>
-        <h2 style="font-size:clamp(28px,4vw,42px);margin:16px 0 22px">A developer who sweats the feel of a single tap.</h2>
-        <p>I design and build <b>hyper-casual and casual games in Unity</b>, from first prototype to shipped title. My work lives in the small stuff — the weight of a drop, the snap of a piece landing, the exact curve of a satisfying animation.</p>
-        <p>Right now I'm going deep on <b>shader programming</b> to push the look of my games further, and I'm always up for collaborating on game design.</p>
-        <div class="chips">
-          <span class="chip">Unity</span>
-          <span class="chip">C#</span>
-          <span class="chip">Hyper-Casual Design</span>
-          <span class="chip">3D Gameplay</span>
-          <span class="chip soft">Shaders — learning</span>
-          <span class="chip soft">Level Design</span>
-          <span class="chip soft">Mobile Optimization</span>
-        </div>
-        <div class="dl-row">
-          <a class="btn btn-ghost" href="Sakhawat_Hossain_CV.pdf" target="_blank" rel="noopener">↓ Download CV</a>
-          <a class="btn btn-ghost" href="Cover%20Letter.pdf" target="_blank" rel="noopener">↓ Cover Letter</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section class="section contact" id="contact">
+  <!-- ============================================================
+       CONTINUE?  (contact)
+  ============================================================= -->
+  <section class="screen continue-screen" id="continue">
     <div class="wrap">
-      <div class="contact-card">
-        <span class="eyebrow" style="justify-content:center">Open to work</span>
-        <h2>Let's make something people can't put down.</h2>
-        <p>Hiring for a Unity role or need a hyper-casual prototype shipped fast? I'd love to hear about it.</p>
-        <div class="contact-cta">
-          <a class="btn btn-primary" href="skype:sakhawatakib?chat">Message on Skype</a>
-          <a class="btn btn-ghost" href="https://github.com/SakhawatAkib" target="_blank" rel="noopener">GitHub — @SakhawatAkib</a>
-        </div>
-        <div class="reachrow">
-          <span>Skype</span> <a href="skype:sakhawatakib?chat">sakhawatakib</a>
-          <span>GitHub</span> <a href="https://github.com/SakhawatAkib" target="_blank" rel="noopener">@SakhawatAkib</a>
-          <span>Featured</span> <a href="https://play.unity.com/en/games/c1a7f93d-f002-45d3-813c-6ad9d46719ca/little-adventure-3d" target="_blank" rel="noopener">Little Adventure 3D</a>
+      <header class="screen-head reveal">
+        <span class="screen-no">// 04</span>
+        <h2 class="screen-title">CONTINUE?</h2>
+        <div class="divider"></div>
+      </header>
+
+      <div class="continue-card reveal">
+        <div class="continue-in">
+          <p class="cont-count">CONTINUE IN <span id="count">9</span>…</p>
+          <h3 class="cont-title">INSERT COIN TO<br>KEEP PLAYING</h3>
+          <p class="cont-sub">Hiring for a Unity role, or need a hyper-casual prototype shipped fast? Drop a coin and let's talk.</p>
+          <div class="cont-cta">
+            <a class="abtn abtn-amber" href="skype:sakhawatakib?chat"><i class="fa-brands fa-skype"></i> MESSAGE ON SKYPE</a>
+            <a class="abtn abtn-cyan" href="https://github.com/SakhawatAkib" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> @SAKHAWATAKIB</a>
+          </div>
+          <ul class="cont-list">
+            <li><span>SKYPE</span> sakhawatakib</li>
+            <li><span>GITHUB</span> @SakhawatAkib</li>
+            <li><span>FEATURED</span> Little Adventure 3D</li>
+          </ul>
         </div>
       </div>
     </div>
   </section>
-
 </main>
 
-<footer>
-  <div class="wrap">
-    <div class="brand"><span class="monogram">SH</span><span>Sakhawat Hossain</span></div>
-    <div class="fnote">Built in Unity · Shipped worldwide · © 2026</div>
-  </div>
+<footer class="foot">
+  <span class="coin">◉</span>
+  <p class="foot-big">GAME OVER — THANKS FOR PLAYING</p>
+  <p class="foot-small">SAKHAWAT HOSSAIN · UNITY 3D DEVELOPER · MADE IN UNITY · © 2026</p>
 </footer>
 
-<!-- video player -->
-<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Gameplay video" aria-hidden="true">
-  <button class="lb-close" id="lbClose" aria-label="Close video">✕</button>
-  <div class="lb-stage">
-    <p class="lb-title" id="lbTitle"></p>
-    <video id="lbVideo" controls playsinline preload="metadata"></video>
+<!-- ===== VIDEO CABINET (lightbox) ===== -->
+<div class="cab" id="cab" role="dialog" aria-modal="true" aria-label="Gameplay video" aria-hidden="true">
+  <button class="cab-close" id="cabClose" aria-label="Close">✕</button>
+  <div class="cab-stage">
+    <div class="cab-bar"><span class="blip"></span><span id="cabTitle">NOW PLAYING</span></div>
+    <video id="cabVideo" controls playsinline preload="metadata"></video>
+    <div class="cab-foot">◉ CREDIT 01 &nbsp;·&nbsp; HI-SCORE 999999 &nbsp;·&nbsp; PRESS ESC TO EXIT</div>
   </div>
 </div>
 
-<script>
-var REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-/* 1. snap-in game grid */
-(function(){
-  var tiles = Array.prototype.slice.call(document.querySelectorAll('.tile'));
-  if(REDUCE || !('IntersectionObserver' in window)){
-    tiles.forEach(function(t){t.classList.add('in')});
-    return;
-  }
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting){
-        var t = e.target, i = tiles.indexOf(t);
-        t.style.transitionDelay = ((i % 4) * 60 + Math.floor(i/4)*40) + 'ms';
-        t.classList.add('in');
-        io.unobserve(t);
-      }
-    });
-  }, {threshold:.15, rootMargin:'0px 0px -8% 0px'});
-  tiles.forEach(function(t){io.observe(t)});
-})();
-
-/* 2. "satisfying click." — a click you can feel */
-(function(){
-  var word = document.querySelector('.click');
-  if(!word) return;
-  function pop(){ if(REDUCE) return; word.classList.remove('pop'); void word.offsetWidth; word.classList.add('pop'); }
-  function ring(x,y){
-    if(REDUCE) return;
-    var r = document.createElement('span');
-    r.className = 'ring';
-    r.style.left = x+'px'; r.style.top = y+'px';
-    r.style.animation = 'ringout .62s ease-out forwards';
-    word.appendChild(r);
-    setTimeout(function(){ r.remove(); }, 640);
-  }
-  word.addEventListener('click', function(e){
-    var b = word.getBoundingClientRect();
-    ring(e.clientX - b.left, e.clientY - b.top);
-    pop();
-  });
-  word.addEventListener('keydown', function(e){
-    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); ring(word.clientWidth/2, word.clientHeight/2); pop(); }
-  });
-  if(!REDUCE) setTimeout(pop, 1500); /* show it's alive once the hero settles */
-})();
-
-/* 3. play gameplay videos in the browser */
-(function(){
-  var lb = document.getElementById('lightbox'),
-      video = document.getElementById('lbVideo'),
-      title = document.getElementById('lbTitle'),
-      closeBtn = document.getElementById('lbClose'),
-      lastFocus = null;
-
-  function open(src, name, origin){
-    lastFocus = origin || null;
-    video.src = src;
-    title.innerHTML = 'Now playing — <b>' + name + '</b>';
-    lb.classList.add('open');
-    lb.setAttribute('aria-hidden','false');
-    document.body.style.overflow = 'hidden';
-    var p = video.play(); if(p && p.catch) p.catch(function(){});
-    closeBtn.focus();
-  }
-  function close(){
-    lb.classList.remove('open');
-    lb.setAttribute('aria-hidden','true');
-    video.pause();
-    video.removeAttribute('src');
-    video.load();
-    document.body.style.overflow = '';
-    if(lastFocus && lastFocus.focus) lastFocus.focus();
-  }
-
-  document.addEventListener('click', function(e){
-    var tile = e.target.closest('.tile');
-    if(tile){
-      var a = tile.querySelector('.tile-play');
-      if(a){
-        e.preventDefault();
-        var name = tile.querySelector('.tile-name');
-        open(a.getAttribute('href'), name ? name.textContent.trim() : 'Gameplay', a);
-      }
-      return;
-    }
-    if(e.target === lb || e.target.closest('#lbClose')) close();
-  });
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape' && lb.classList.contains('open')) close();
-  });
-})();
-</script>
+<script src="script.js"></script>
 </body>
 </html>
