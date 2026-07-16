@@ -43,8 +43,7 @@
         var sx=Math.random()*W, sy=Math.random()*H;
         stars.push({
           x:sx, y:sy,
-          hx:sx, hy:sy, // home position — springs back here after a blast
-          vx:(Math.random()-.5)*.25, vy:(Math.random()-.5)*.25,
+          vx:(Math.random()-.5)*.8, vy:(Math.random()-.5)*.8,
           s:Math.random()<.15 ? 4 : 2,
           c:colors[(Math.random()*colors.length)|0]
         });
@@ -56,13 +55,14 @@
       for(var i=0;i<stars.length;i++){
         var p = stars[i];
         p.x += p.vx; p.y += p.vy;
-        // spring back to home + damping = overdamped return:
-        // blast pushes out, then eases back home ONCE and settles (no bouncing).
-        // softer spring + lighter damping = velocity lingers longer before settling.
-        p.vx += (p.hx - p.x) * 0.0012;
-        p.vy += (p.hy - p.y) * 0.0012;
-        p.vx *= 0.965;
-        p.vy *= 0.965;
+        // wrap around edges so particles drift continuously
+        if(p.x < -6) p.x = W + 6;
+        else if(p.x > W + 6) p.x = -6;
+        if(p.y < -6) p.y = H + 6;
+        else if(p.y > H + 6) p.y = -6;
+        // very light damping — lets blast-launched particles gradually settle
+        p.vx *= 0.9985;
+        p.vy *= 0.9985;
         var dx=p.x-mouse.x, dy=p.y-mouse.y, d=Math.hypot(dx,dy);
         if(d<140){
           ctx.strokeStyle = p.c; ctx.globalAlpha = (1-d/140)*.5; ctx.lineWidth=1;
@@ -91,7 +91,7 @@
 
         // pull nearby stars slightly INWARD toward the charge (energy gathering)
         for(var ci=0;ci<stars.length;ci++){
-          var sp = stars[ci], sdx = charge.x - sp.x, sdy = charge.y - sp.y, sd = Math.hypot(sdx,sdy)||1;
+          var sp = stars[ci], sdx = charge.x - sp.x, sdy = charge.y - sp.y, sd = Math.hypot(sdx, sdy)||1;
           if(sd < 140){ sp.vx += (sdx/sd) * 0.06 * t; sp.vy += (sdy/sd) * 0.06 * t; }
         }
 
@@ -344,9 +344,10 @@
         open(trigger.getAttribute("data-video"), trigger.getAttribute("data-title"), trigger);
         return;
       }
-      // whole game cabinet opens its reel
+      // whole game cabinet opens its reel (store links open externally)
       var game = e.target.closest(".game");
       if(game && game.getAttribute("data-video")){
+        if(e.target.closest(".game-stores")) return;
         e.preventDefault();
         open(game.getAttribute("data-video"), game.getAttribute("data-title"), game);
         return;
@@ -361,6 +362,7 @@
       g.setAttribute("tabindex","0");
       g.setAttribute("role","button");
       g.addEventListener("keydown", function(e){
+        if(e.target.closest(".game-stores")) return;
         if(e.key === "Enter" || e.key === " "){ e.preventDefault(); open(g.getAttribute("data-video"), g.getAttribute("data-title"), g); }
       });
     });
