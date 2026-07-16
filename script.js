@@ -38,10 +38,12 @@
     }
     function seed(){
       stars = [];
-      var n = Math.min(130, Math.round(W*H/9000));
+      var n = Math.min(260, Math.round(W*H/5000));
       for(var i=0;i<n;i++){
+        var sx=Math.random()*W, sy=Math.random()*H;
         stars.push({
-          x:Math.random()*W, y:Math.random()*H,
+          x:sx, y:sy,
+          hx:sx, hy:sy, // home position — springs back here after a blast
           vx:(Math.random()-.5)*.25, vy:(Math.random()-.5)*.25,
           s:Math.random()<.15 ? 4 : 2,
           c:colors[(Math.random()*colors.length)|0]
@@ -54,7 +56,13 @@
       for(var i=0;i<stars.length;i++){
         var p = stars[i];
         p.x += p.vx; p.y += p.vy;
-        if(p.x<0)p.x=W; if(p.x>W)p.x=0; if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+        // spring back to home + damping = overdamped return:
+        // blast pushes out, then eases back home ONCE and settles (no bouncing).
+        // softer spring + lighter damping = velocity lingers longer before settling.
+        p.vx += (p.hx - p.x) * 0.0012;
+        p.vy += (p.hy - p.y) * 0.0012;
+        p.vx *= 0.965;
+        p.vy *= 0.965;
         var dx=p.x-mouse.x, dy=p.y-mouse.y, d=Math.hypot(dx,dy);
         if(d<140){
           ctx.strokeStyle = p.c; ctx.globalAlpha = (1-d/140)*.5; ctx.lineWidth=1;
@@ -67,10 +75,70 @@
       }
       // click shockwaves
       for(var r=ripples.length-1;r>=0;r--){
-        var w = ripples[r]; w.rad += 7; w.a -= .02;
+        var w = ripples[r]; w.rad += (w.spd||7); w.a -= (w.fade||.02);
         if(w.a<=0){ ripples.splice(r,1); continue; }
-        ctx.globalAlpha = w.a; ctx.strokeStyle = w.c; ctx.lineWidth = 2;
+        ctx.globalAlpha = w.a; ctx.strokeStyle = w.c; ctx.lineWidth = (w.lw||2);
         ctx.beginPath(); ctx.arc(w.x, w.y, w.rad, 0, Math.PI*2); ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+      // charge-up indicator while pressing and holding
+      if(charge){
+        var t = Math.min(1, (performance.now() - charge.start) / maxChargeMs);
+        var full = t >= 1;
+        var pulse = 0.65 + 0.35 * Math.sin(performance.now() / 70);
+        var coreColor = full ? "#ff2e88" : "#29f2ff";
+        var ringR = 10 + 52 * t;
+
+        // pull nearby stars slightly INWARD toward the charge (energy gathering)
+        for(var ci=0;ci<stars.length;ci++){
+          var sp = stars[ci], sdx = charge.x - sp.x, sdy = charge.y - sp.y, sd = Math.hypot(sdx,sdy)||1;
+          if(sd < 140){ sp.vx += (sdx/sd) * 0.06 * t; sp.vy += (sdy/sd) * 0.06 * t; }
+        }
+
+        // outer growing ring
+        ctx.save();
+        ctx.globalAlpha = 0.5 + 0.4 * t;
+        ctx.strokeStyle = coreColor;
+        ctx.lineWidth = 2.5;
+        ctx.shadowBlur = 18 * pulse;
+        ctx.shadowColor = coreColor;
+        ctx.beginPath();
+        ctx.arc(charge.x, charge.y, ringR * (full ? pulse : 1), 0, Math.PI*2);
+        ctx.stroke();
+
+        // progress arc — fills clockwise as it charges
+        ctx.globalAlpha = 0.9;
+        ctx.strokeStyle = full ? "#ffd23f" : "#57ff8f";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.arc(charge.x, charge.y, ringR + 6, -Math.PI/2, -Math.PI/2 + Math.PI*2*t);
+        ctx.stroke();
+
+        // bright inner core, brighter as it fills
+        ctx.globalAlpha = 0.35 + 0.5 * t;
+        ctx.fillStyle = full ? "#ffd23f" : "#29f2ff";
+        ctx.shadowBlur = 24 * pulse;
+        ctx.shadowColor = ctx.fillStyle;
+        ctx.beginPath();
+        ctx.arc(charge.x, charge.y, (4 + 10 * t) * pulse, 0, Math.PI*2);
+        ctx.fill();
+
+        // crackling sparks when nearly full
+        if(t > 0.55){
+          var sparks = Math.round((t - 0.55) * 14);
+          for(var s=0;s<sparks;s++){
+            var ang = Math.random() * Math.PI * 2;
+            var rr = ringR * (0.7 + Math.random() * 0.6);
+            ctx.globalAlpha = Math.random() * 0.8 * t;
+            ctx.fillStyle = colors[(Math.random()*colors.length)|0];
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = ctx.fillStyle;
+            var sx = charge.x + Math.cos(ang) * rr;
+            var sy = charge.y + Math.sin(ang) * rr;
+            ctx.fillRect(sx - 1.5, sy - 1.5, 3, 3);
+          }
+        }
+        ctx.restore();
         ctx.globalAlpha = 1;
       }
       raf = requestAnimationFrame(step);
@@ -82,21 +150,68 @@
       for(var i=0;i<stars.length;i++){var p=stars[i];ctx.fillStyle=p.c;ctx.fillRect(p.x,p.y,p.s,p.s);}
     }
 
+    var charge = null; // active charge: {x, y, start}
+    var maxChargeMs = 1400;
+
     window.addEventListener("resize", function(){ size(); seed(); });
     host.addEventListener("mousemove", function(e){
       var r = canvas.getBoundingClientRect(); mouse.x = e.clientX-r.left; mouse.y = e.clientY-r.top;
     });
     host.addEventListener("mouseleave", function(){ mouse.x=-999; mouse.y=-999; });
+
     host.addEventListener("pointerdown", function(e){
       if(REDUCE) return;
-      var r = canvas.getBoundingClientRect(), x=e.clientX-r.left, y=e.clientY-r.top;
-      ripples.push({x:x,y:y,rad:4,a:.9,c:colors[(Math.random()*colors.length)|0]});
-      // coin-charge blast: shove nearby stars outward
+      var r = canvas.getBoundingClientRect();
+      var x = e.clientX - r.left;
+      var y = e.clientY - r.top;
+      charge = {x: x, y: y, start: performance.now()};
+    });
+
+    function releaseBlast(){
+      if(!charge) return;
+      var x = charge.x;
+      var y = charge.y;
+      var held = performance.now() - charge.start;
+      var intensity = Math.min(1, held / maxChargeMs); // 0 to 1
+      // exponential curve — light taps stay gentle, holding ramps up hard
+      var power = Math.pow(intensity, 2.2);
+      charge = null;
+
+      // main shockwave — expands faster and fades slower the harder you charged
+      ripples.push({
+        x: x, y: y, rad: 4, a: 0.95,
+        spd: 6 + 20 * power,      // 6 → 26 px/frame
+        fade: 0.026 - 0.016 * power, // slower fade at full charge = wider wave
+        lw: 2 + 4 * power,
+        c: intensity >= 1 ? "#ffd23f" : colors[(Math.random()*colors.length)|0]
+      });
+      // echo rings scaled by intensity
+      var echoes = Math.round(power * 3); // 0-3 extra rings
+      for(var ri = 0; ri < echoes; ri++){
+        ripples.push({
+          x: x, y: y, rad: 4, a: 0.6,
+          spd: 5 + 14 * power, fade: 0.03, lw: 1.5,
+          c: colors[(Math.random()*colors.length)|0]
+        });
+      }
+
+      // push particles with force + range scaled by the intensity curve
+      var force = 2 + 22 * power;           // ~2x tap → ~24x full charge
+      var distance = 150 + 500 * power;     // blast radius grows with charge
+
       for(var i=0;i<stars.length;i++){
         var p=stars[i], dx=p.x-x, dy=p.y-y, d=Math.hypot(dx,dy)||1;
-        if(d<160){ p.vx += (dx/d)*1.4; p.vy += (dy/d)*1.4; }
+        if(d < distance){
+          var falloff = 1 - (d / distance); // stronger near the center
+          p.vx += (dx/d) * force * falloff;
+          p.vy += (dy/d) * force * falloff;
+        }
       }
-    });
+    }
+
+    host.addEventListener("pointerup", releaseBlast);
+    host.addEventListener("pointerleave", releaseBlast);
+    host.addEventListener("pointercancel", function(){ charge = null; });
   })();
 
   /* ---------------------------------------------------------------
