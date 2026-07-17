@@ -33,13 +33,34 @@
     <a href="#games">GAMES</a>
     <a href="#player">PLAYER</a>
     <a href="#career">CAREER</a>
+    <a href="#arcade" data-arcade-trigger>ARCADE</a>
     <a href="#continue">CONTINUE</a>
     <span class="hud-status"><span class="blip"></span>ONLINE</span>
   </nav>
-  <button class="hud-burger" id="burger" aria-label="Open menu" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
+  <div class="hud-tools">
+    <button class="mute-btn" id="muteBtn" type="button" aria-label="Mute arcade sounds" aria-pressed="false" title="Sound on/off">
+      <i class="fa-solid fa-volume-high" aria-hidden="true"></i>
+    </button>
+    <button class="hud-burger" id="burger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </header>
+
+<!-- Persistent arcade score strip -->
+<aside class="score-strip" id="scoreStrip" aria-live="polite">
+  <div class="score-cell"><span class="score-k">CREDITS</span><span class="score-v" id="creditsVal">00</span></div>
+  <div class="score-cell"><span class="score-k">SCORE</span><span class="score-v" id="scoreVal">000000</span></div>
+  <div class="score-cell"><span class="score-k">HI-SCORE</span><span class="score-v amber" id="hiScoreVal">000000</span></div>
+  <button class="score-coin" id="insertCoin" type="button" aria-label="Insert a coin for one credit">◉ INSERT</button>
+</aside>
+
+<!-- Floating arcade launcher -->
+<button class="arcade-launcher" id="arcadeLauncher" type="button"
+  aria-label="Open Player vs Machine arcade" aria-controls="arcade" aria-expanded="false">
+  <i class="fa-solid fa-gamepad" aria-hidden="true"></i>
+  <span>PLAY</span>
+</button>
 
 <main>
 
@@ -69,10 +90,12 @@
 
       <div class="title-cta reveal" style="--d:.66s">
         <a class="abtn abtn-amber" href="#games">▸ PRESS START</a>
-        <button class="abtn abtn-cyan" data-video="Show%20Case%20Video.mp4" data-title="LITTLE ADVENTURE 3D — SHOWREEL">◉ INSERT COIN</button>
+        <button class="abtn abtn-cyan" id="heroCoin" type="button">◉ INSERT COIN</button>
+        <button class="abtn abtn-ghost" id="playArcade" type="button" data-arcade-trigger title="Open arcade">▶ PLAY ARCADE</button>
       </div>
 
-      <p class="press-start reveal" style="--d:.8s">▼ INSERT COIN TO CONTINUE ▼</p>
+      <p class="press-start reveal" style="--d:.8s">▼ INSERT COIN · THEN PLAY ARCADE ▼</p>
+      <p class="hint-keys reveal" style="--d:.92s">KEYS: ← → SELECT CABINET &nbsp;·&nbsp; ENTER PLAY REEL &nbsp;·&nbsp; C INSERT COIN</p>
     </div>
   </section>
 
@@ -84,9 +107,23 @@
       <header class="screen-head reveal">
         <span class="screen-no">// 01</span>
         <h2 class="screen-title">SELECT YOUR GAME</h2>
-        <p class="screen-sub">Eleven cabinets on the floor. Hover to preview, hit <b>▶ PLAY</b> to watch the reel.</p>
+        <p class="screen-sub">Eleven cabinets on the floor. Filter by mode, hover to preview, hit <b>▶ PLAY</b> for the reel — or press <b>SURPRISE</b> and let fate pick.</p>
         <div class="divider"></div>
       </header>
+
+      <div class="cab-controls reveal" id="cabControls">
+        <div class="mode-filters" id="modeFilters" role="toolbar" aria-label="Filter games by mode">
+          <button class="mode-chip on" type="button" data-mode="all">ALL</button>
+          <button class="mode-chip" type="button" data-mode="collect">COLLECT</button>
+          <button class="mode-chip" type="button" data-mode="pack">PACK</button>
+          <button class="mode-chip" type="button" data-mode="match">MATCH</button>
+          <button class="mode-chip" type="button" data-mode="stack">STACK</button>
+          <button class="mode-chip" type="button" data-mode="sort">SORT</button>
+          <button class="mode-chip" type="button" data-mode="3d">3D</button>
+          <button class="mode-chip" type="button" data-mode="digital-twin">DIGITAL TWIN</button>
+        </div>
+        <button class="abtn abtn-ghost surprise-btn" id="surpriseBtn" type="button">✦ SURPRISE ME</button>
+      </div>
 
       <!-- MAIN ATTRACTION: featured -->
       <article class="feature reveal" style="--c:var(--magenta)">
@@ -112,6 +149,7 @@
       <div class="cabinets" id="cabinets">
 
         <article class="game reveal" style="--c:var(--amber)"
+          data-mode="collect"
           data-video="Game%20Video/Balls%20Collect%20Mania.mp4" data-title="BALLS COLLECT MANIA"
           data-base="Game%20Screenshoot/Balls%20Collect%20Mania/" data-shots="1,2,3,4">
           <div class="game-in">
@@ -133,6 +171,7 @@
         </article>
 
         <article class="game reveal" style="--c:var(--magenta)"
+          data-mode="pack"
           data-video="Game%20Video/Block%20Pack%20Mania.mp4" data-title="BLOCK PACK JAM"
           data-base="Game%20Screenshoot/Block%20Pack%20Jam/" data-shots="1,2,3,4,5">
           <div class="game-in">
@@ -154,6 +193,7 @@
         </article>
 
         <article class="game reveal" style="--c:var(--purple)"
+          data-mode="match"
           data-video="Game%20Video/Color%20Shape%20Jam.mp4" data-title="COLOR SHAPE JAM"
           data-base="Game%20Screenshoot/Color%20Shape%20Jam/" data-shots="1,2,3,4">
           <div class="game-in">
@@ -175,6 +215,7 @@
         </article>
 
         <article class="game reveal" style="--c:var(--cyan)"
+          data-mode="stack 3d"
           data-video="Game%20Video/Cup%20Jam%203D.mp4" data-title="CUP JAM 3D"
           data-base="Game%20Screenshoot/Cup%20Jam%203D/" data-shots="1,2,3,4">
           <div class="game-in">
@@ -196,6 +237,7 @@
         </article>
 
         <article class="game reveal" style="--c:var(--green)"
+          data-mode="digital-twin"
           data-video="Game%20Video/Energy%20Metaverse%20Creator.mp4" data-title="ENERGY METAVERSE CREATOR"
           data-base="Game%20Screenshoot/Energy%20Metaverse%20Creator/" data-shots="0,1,2,3">
           <div class="game-in">
@@ -207,7 +249,7 @@
             </div>
             <div class="game-meta">
               <h3 class="game-name">Energy Metaverse Creator</h3>
-              <span class="game-mode">MODE: SANDBOX</span>
+              <span class="game-mode">MODE: DIGITAL TWIN</span>
               <div class="game-stores">
               <a class="store-btn" href="https://energymeta.ai/" target="_blank" rel="noopener" aria-label="Open ENERGY METAVERSE CREATOR website"><i class="fa-solid fa-globe"></i> WEB</a>
               </div>
@@ -216,6 +258,7 @@
         </article>
 
         <article class="game reveal" style="--c:var(--cyan)"
+          data-mode="sort"
           data-video="Game%20Video/Fish%20Sort.mp4" data-title="FISH SORT"
           data-base="Game%20Screenshoot/Fish%20Sort/" data-shots="1,2,3,4,5,6">
           <div class="game-in">
@@ -237,6 +280,7 @@
         </article>
 
         <article class="game reveal" style="--c:var(--magenta)"
+          data-mode="tidy"
           data-video="Game%20Video/Messy%20Room%20Jam.mp4" data-title="MESSY ROOM JAM"
           data-base="Game%20Screenshoot/Messy%20Room%20Jam/" data-shots="1,2,3,4,5">
           <div class="game-in">
@@ -258,6 +302,7 @@
         </article>
 
         <article class="game reveal" style="--c:var(--amber)"
+          data-mode="serve 3d"
           data-video="Game%20Video/Plate%20Jam%203D.mp4" data-title="PLATE JAM 3D"
           data-base="Game%20Screenshoot/Plate%20Jam%203D/" data-shots="1,2,3,4,5">
           <div class="game-in">
@@ -279,6 +324,7 @@
         </article>
 
         <article class="game reveal" style="--c:var(--purple)"
+          data-mode="pull-pin"
           data-video="Game%20Video/Rescue%20Puzzle.mp4" data-title="RESCUE PUZZLE"
           data-base="Game%20Screenshoot/Rescue%20Puzzle/" data-shots="1,2,3,4,5">
           <div class="game-in">
@@ -300,6 +346,7 @@
         </article>
 
         <article class="game reveal" style="--c:var(--green)"
+          data-mode="fill"
           data-video="Game%20Video/Sand%20Jam%20Rush.mp4" data-title="SAND JAM RUSH"
           data-base="Game%20Screenshoot/Sand%20Jam%20Rush/" data-shots="1,2,3,4,5">
           <div class="game-in">
@@ -321,6 +368,7 @@
         </article>
 
         <article class="game reveal" style="--c:var(--cyan)"
+          data-mode="pour"
           data-video="Game%20Video/Water%20Color%20Jam.mp4" data-title="WATER COLOR JAM"
           data-base="Game%20Screenshoot/Water%20Color%20Jam/" data-shots="1,2,3,4">
           <div class="game-in">
@@ -468,12 +516,44 @@
   </section>
 
   <!-- ============================================================
+       ARCADE — coin rush mini-game (hidden; opens from floating icon)
+  ============================================================= -->
+  <section class="screen arcade-screen arcade-popup" id="arcade" role="dialog" aria-modal="true"
+    aria-labelledby="arcadeTitle" aria-hidden="true" tabindex="-1">
+    <div class="wrap">
+      <button class="arcade-popup-close" id="arcadeClose" type="button" aria-label="Close arcade">✕</button>
+      <header class="screen-head reveal">
+        <span class="screen-no">// 04</span>
+        <h2 class="screen-title" id="arcadeTitle">PLAYER VS MACHINE</h2>
+        <p class="screen-sub">Spend 1 credit. Catch falling coins for 15 seconds. Beat your own hi-score. This cabinet never tilts.</p>
+        <div class="divider"></div>
+      </header>
+
+      <div class="arcade-panel reveal">
+        <div class="arcade-panel-in">
+          <div class="arcade-stats">
+            <div class="stat"><span class="stat-k">LAST RUN</span><span class="stat-v" id="lastRun">—</span></div>
+            <div class="stat"><span class="stat-k">BEST RUN</span><span class="stat-v go" id="bestRun">0000</span></div>
+            <div class="stat"><span class="stat-k">CREDITS</span><span class="stat-v" id="arcadeCredits">00</span></div>
+          </div>
+          <p class="arcade-blurb">Move the catcher with your mouse or finger. Gold coins = +100. Magenta gems = +250. Miss too many and the machine laughs — silently.</p>
+          <div class="arcade-cta">
+            <button class="abtn abtn-amber" id="startArcade" type="button" disabled>▸ INSERT 1 CREDIT TO PLAY</button>
+            <button class="abtn abtn-cyan" id="freeCredit" type="button">◉ GET FREE CREDIT</button>
+          </div>
+          <p class="arcade-tip">Tip: Konami code still works on this machine. ↑↑↓↓←→←→BA</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
        CONTINUE?  (contact)
   ============================================================= -->
   <section class="screen continue-screen" id="continue">
     <div class="wrap">
       <header class="screen-head reveal">
-        <span class="screen-no">// 04</span>
+        <span class="screen-no">// 05</span>
         <h2 class="screen-title">CONTINUE?</h2>
         <div class="divider"></div>
       </header>
@@ -488,12 +568,58 @@
             <a class="abtn abtn-cyan" href="https://www.linkedin.com/in/sakhawat-hossain-28194318b" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i> LINKEDIN</a>
           </div>
           <ul class="cont-list">
+            <li><span>EMAIL</span> <a href="mailto:sakhawatakib@gmail.com">sakhawatakib@gmail.com</a></li>
             <li><span>WHATSAPP</span> +880 1316 056035</li>
             <li><span>GITHUB</span> @SakhawatAkib</li>
             <li><span>FEATURED</span> Little Adventure 3D</li>
           </ul>
         </div>
       </div>
+
+      <form class="mail-form reveal" id="mailForm" action="https://formsubmit.co/sakhawatakib@gmail.com" method="POST" novalidate>
+        <div class="mail-form-in">
+          <div class="mail-head">
+            <span class="blip"></span>
+            <span class="mail-title">TRANSMIT MESSAGE</span>
+            <span class="mail-proto">SMTP · PORT 25</span>
+          </div>
+          <p class="mail-sub">Sends straight to <b>sakhawatakib@gmail.com</b>. Open this page via <b>Live Server</b> or <b>GitHub Pages</b> (not by double-clicking the HTML file). Check spam if nothing lands.</p>
+
+          <div class="mail-grid">
+            <label class="mail-field">
+              <span class="mail-label">PLAYER NAME</span>
+              <input type="text" name="name" id="mailName" autocomplete="name" required maxlength="80" placeholder="YOUR NAME">
+            </label>
+            <label class="mail-field">
+              <span class="mail-label">REPLY EMAIL</span>
+              <input type="email" name="email" id="mailEmail" autocomplete="email" required maxlength="120" placeholder="you@studio.com">
+            </label>
+            <label class="mail-field mail-full">
+              <span class="mail-label">SUBJECT</span>
+              <input type="text" name="subject" id="mailSubject" maxlength="120" placeholder="UNITY ROLE / PROTOTYPE / HI">
+            </label>
+            <label class="mail-field mail-full">
+              <span class="mail-label">MESSAGE</span>
+              <textarea name="message" id="mailMessage" required maxlength="2000" rows="5" placeholder="WHAT ARE WE BUILDING?"></textarea>
+            </label>
+          </div>
+
+          <!-- FormSubmit helpers — _url required so FormSubmit accepts the post -->
+          <input type="hidden" name="_subject" id="mailSubjectHidden" value="Portfolio contact — arcade cabinet">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_replyto" id="mailReplyto" value="">
+          <input type="hidden" name="_url" id="mailUrl" value="">
+          <input type="text" name="_honey" class="mail-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <div class="mail-actions">
+            <button class="abtn abtn-amber" type="submit" id="mailSend">
+              <i class="fa-solid fa-paper-plane" aria-hidden="true"></i> SEND TRANSMISSION
+            </button>
+            <p class="mail-status" id="mailStatus" role="status" aria-live="polite"></p>
+          </div>
+        </div>
+      </form>
     </div>
   </section>
 </main>
@@ -513,6 +639,27 @@
     <div class="cab-foot">◉ CREDIT 01 &nbsp;·&nbsp; HI-SCORE 999999 &nbsp;·&nbsp; PRESS ESC TO EXIT</div>
   </div>
 </div>
+
+<!-- ===== COIN RUSH MINI-GAME ===== -->
+<div class="rush" id="rush" role="dialog" aria-modal="true" aria-label="Coin Rush arcade game" aria-hidden="true">
+  <button class="cab-close" id="rushClose" aria-label="Close arcade">✕</button>
+  <div class="rush-stage">
+    <div class="rush-hud">
+      <span>TIME <b id="rushTime">15</b></span>
+      <span>SCORE <b id="rushScore">0</b></span>
+      <span>COMBO <b id="rushCombo">x1</b></span>
+    </div>
+    <canvas id="rushCanvas" width="720" height="480" aria-label="Coin Rush playfield"></canvas>
+    <div class="rush-overlay" id="rushOverlay">
+      <p class="rush-msg" id="rushMsg">READY PLAYER ONE</p>
+      <button class="abtn abtn-amber" id="rushGo" type="button">▸ START</button>
+    </div>
+    <div class="rush-foot">MOVE · CATCH COINS · ESC QUITS</div>
+  </div>
+</div>
+
+<!-- Achievement toasts -->
+<div class="toasts" id="toasts" aria-live="polite"></div>
 
 <script src="script.js"></script>
 </body>
