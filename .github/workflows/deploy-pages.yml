@@ -1,0 +1,64 @@
+# GitHub Pages does not expand Git LFS. Branch deploys serve ~130-byte
+# pointer files instead of real .mp4s, so videos fail in the browser.
+# This workflow checks out with LFS and deploys the actual media.
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [dev]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (with Git LFS)
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Prepare site (real video bytes, not LFS pointers)
+        run: |
+          mkdir -p _site
+          rsync -a \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude '.agents/' \
+            --exclude '.claude/' \
+            --exclude '.idea/' \
+            --exclude '_site/' \
+            --exclude '.gitignore' \
+            --exclude '.gitattributes' \
+            ./ _site/
+
+          bytes=$(wc -c < "_site/Show Case Video.mp4")
+          echo "Show Case Video.mp4 size: ${bytes} bytes"
+          if [ "$bytes" -lt 100000 ]; then
+            echo "::error::Video looks like an LFS pointer (${bytes} bytes). LFS checkout failed."
+            head -c 200 "_site/Show Case Video.mp4" || true
+            exit 1
+          fi
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
